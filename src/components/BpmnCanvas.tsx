@@ -33,39 +33,22 @@ const BpmnCanvas = forwardRef<BpmnCanvasHandle, BpmnCanvasProps>(function BpmnCa
   useEffect(() => {
     if (!hostRef.current) return;
 
+    let active = true;
     const viewer = new NavigatedViewer({ container: hostRef.current });
     viewerRef.current = viewer;
+
     const eventBus = viewer.get<EventBus>('eventBus');
     eventBus.on('element.click', (event: unknown) => {
       const element = (event as { element?: { id?: string } }).element;
       if (element?.id) clickHandlerRef.current?.(element.id);
     });
 
-    return () => {
-      viewer.destroy();
-      viewerRef.current = null;
-    };
-  }, []);
-
-  useEffect(() => {
-    const viewer = viewerRef.current;
-    if (!viewer) return;
-
-    let active = true;
     setState('loading');
     setError('');
 
     viewer.importXML(xml).then(() => {
       if (!active) return;
       const canvas = viewer.get<Canvas>('canvas');
-      const registry = viewer.get<ElementRegistry>('elementRegistry');
-
-      Object.entries(markers).forEach(([ kind, ids ]) => {
-        ids?.forEach((id) => {
-          if (registry.get(id)) canvas.addMarker(id, `diff-${kind}`);
-        });
-      });
-
       canvas.zoom('fit-viewport');
       setState('ready');
     }).catch((reason: unknown) => {
@@ -74,8 +57,31 @@ const BpmnCanvas = forwardRef<BpmnCanvasHandle, BpmnCanvasProps>(function BpmnCa
       setState('error');
     });
 
-    return () => { active = false; };
-  }, [ xml, markers ]);
+    return () => {
+      active = false;
+      viewer.destroy();
+      if (viewerRef.current === viewer) viewerRef.current = null;
+    };
+  }, [ xml ]);
+
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer || state !== 'ready') return;
+
+    const canvas = viewer.get<Canvas>('canvas');
+    const registry = viewer.get<ElementRegistry>('elementRegistry');
+    const kinds: ChangeKind[] = [ 'added', 'removed', 'changed', 'layout' ];
+
+    registry.getAll().forEach((element) => {
+      kinds.forEach((kind) => canvas.removeMarker(element.id, `diff-${kind}`));
+    });
+
+    Object.entries(markers).forEach(([ kind, ids ]) => {
+      ids?.forEach((id) => {
+        if (registry.get(id)) canvas.addMarker(id, `diff-${kind}`);
+      });
+    });
+  }, [ markers, state ]);
 
   useImperativeHandle(ref, () => ({
     zoomIn: () => {
