@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Generated builds and caches
+dist/
+app-dist/
+.vite/
+coverage/
+.nyc_output/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.swp
+
+# Editor and OS metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini

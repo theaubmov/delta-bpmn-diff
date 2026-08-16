@@ -1,0 +1,79 @@
+{
+  "name": "bpmn-js-differ",
+  "version": "3.2.0",
+  "description": "A semantic diffing utility for BPMN 2.0 files",
+  "scripts": {
+    "all": "run-s lint test build:app",
+    "dev": "vite",
+    "build:app": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint lib test",
+    "pretest": "rollup -c --bundleConfigAsCjs",
+    "test": "mocha test/spec/*.js"
+  },
+  "main": "./dist/index.cjs",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./dist/index.esm.js",
+      "node": "./dist/index.cjs"
+    }
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bpmn-io/bpmn-js-differ"
+  },
+  "keywords": [
+    "bpmnjs",
+    "diff"
+  ],
+  "author": {
+    "name": "Nico Rehwaldt",
+    "url": "https://github.com/Nikku"
+  },
+  "contributors": [
+    {
+      "name": "bpmn.io contributors",
+      "url": "https://github.com/bpmn-io"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^15.3.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "bpmn-moddle": "^10.0.0",
+    "chai": "^6.2.2",
+    "eslint": "^9.39.2",
+    "eslint-plugin-bpmn-io": "^2.2.0",
+    "mocha": "^11.8.0",
+    "npm-run-all2": "^9.0.3",
+    "rollup": "^4.62.4",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.1",
+    "zeebe-bpmn-moddle": "^1.11.0"
+  },
+  "dependencies": {
+    "@codemirror/lang-xml": "^6.1.0",
+    "@uiw/react-codemirror": "^4.25.11",
+    "bpmn-js": "^18.24.0",
+    "diffpatch": "^0.6.0",
+    "html-to-image": "^1.11.13",
+    "lucide-react": "^1.31.0",
+    "min-dash": "^5.0.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "overrides": {
+    "mocha": {
+      "diff": "^9.0.0",
+      "serialize-javascript": "^7.1.0"
+    }
+  },
+  "files": [
+    "dist"
+  ]
+}
