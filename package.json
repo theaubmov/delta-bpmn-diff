@@ -23,7 +23,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bpmn-io/bpmn-js-differ"
+    "url": "https://github.com/theaubmov/delta-bpmn-diff"
   },
   "keywords": [
     "bpmnjs",

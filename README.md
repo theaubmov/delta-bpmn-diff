@@ -1,7 +1,5 @@
 # Delta BPMN
 
-[![CI](https://github.com/bpmn-io/bpmn-js-differ/actions/workflows/CI.yml/badge.svg)](https://github.com/bpmn-io/bpmn-js-differ/actions/workflows/CI.yml)
-
 A privacy-focused, browser-based tool for visually and semantically comparing BPMN 2.0 workflows. Delta BPMN combines a React + TypeScript interface with the `bpmn-js-differ` comparison engine and [bpmn-js](https://bpmn.io/toolkit/bpmn-js/) rendering.
 
 > **Private by design:** your BPMN files and pasted XML are processed entirely inside your browser. The application does not upload workflows, XML, filenames, or comparison results to a server. You can safely compare confidential workflows without sharing their contents with the application host.
@@ -47,7 +45,11 @@ All sensitive operations happen on the user's device:
 
 There is no backend API for workflow processing, no workflow storage, and no file upload step. Closing or refreshing the page clears the current in-memory comparison.
 
-The development server listens on the local network as well as localhost. For a public deployment, publish the generated `app-dist/` directory to any static host such as GitHub Pages, Netlify, Cloudflare Pages, or Vercel. No backend service is required.
+The development server listens on the local network as well as localhost. For a public deployment, publish the generated `app-dist/` directory to any static host. No backend service is required.
+
+### Deploy to Netlify
+
+The included `netlify.toml` configures Netlify to run `npm run build:app` and publish `app-dist/`. Import the repository into Netlify and deploy it without overriding those build settings. If the Netlify UI already contains a publish directory, change it from `dist` to `app-dist` or clear the UI override so the repository configuration is used.
 
 When the public repository is ready, set `PROJECT_REPOSITORY_URL` in `src/config.ts`. This activates the GitHub buttons in the application and About-page footers.
 
